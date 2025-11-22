@@ -36,6 +36,10 @@ public class MutantDetector {
     }
 
     public boolean isMutant(String[] dna) {
+        if (dna == null || dna.length < LONGITUD_SECUENCIA) {
+            return false;
+        }
+
         final int n = dna.length;
 
         // 2. Inicializar un contador de secuencias encontradas.
