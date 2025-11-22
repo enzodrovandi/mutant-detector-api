@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.DnaRequest;
 import org.example.dto.StatsResponse;
@@ -12,12 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/mutant")
 @RequiredArgsConstructor
+@Validated
 public class MutantController {
     private final MutantService mutantService;
     private final StatsService statsService;
 
     @PostMapping
-    public ResponseEntity<Void> checkMutant(@RequestBody DnaRequest dnaRequest) {
+    public ResponseEntity<Void> checkMutant(@Valid @RequestBody DnaRequest dnaRequest) {
         boolean isMutant = mutantService.isMutant(dnaRequest.getDna());
         if (isMutant) {
             return ResponseEntity.ok().build();

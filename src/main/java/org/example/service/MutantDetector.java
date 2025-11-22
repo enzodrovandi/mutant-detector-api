@@ -36,23 +36,7 @@ public class MutantDetector {
     }
 
     public boolean isMutant(String[] dna) {
-        // 1. Validar la matriz de ADN (tamaño, caracteres válidos).
-        if (dna == null || dna.length < LONGITUD_SECUENCIA){
-            return false;
-        }
-
         final int n = dna.length;
-
-        for (String row : dna) {
-            if (row == null || row.length() != n){
-                return false;
-            }
-            for (char c : row.toCharArray()) {
-                if (c != 'A' && c != 'T' && c != 'C' && c != 'G'){
-                    return false;
-                }
-            }
-        }
 
         // 2. Inicializar un contador de secuencias encontradas.
         int contadorSecuencias = 0;
