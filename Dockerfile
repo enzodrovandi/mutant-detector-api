@@ -8,9 +8,9 @@ FROM alpine:latest as build
 # Actualizar el índice de paquetes de Alpine
 RUN apk update
 
-# Instalar OpenJDK 17 necesario para compilar código Java/Spring Boot
+# Instalar OpenJDK 21 necesario para compilar código Java/Spring Boot
 # Alpine usa 'apk' como gestor de paquetes (equivalente a apt/yum)
-RUN apk add openjdk17
+RUN apk add openjdk21
 
 # Copiar TODO el código fuente del proyecto al contenedor
 # Primer '.' = origen (directorio actual del host)
@@ -21,10 +21,13 @@ COPY . .
 # Necesario porque los permisos pueden perderse al copiar archivos
 RUN chmod +x ./gradlew
 
+# FIX: Asegurar que el script tenga finales de línea de Unix (LF)
+RUN sed -i 's/\r$//' ./gradlew
+
 # Ejecutar Gradle para compilar y generar el JAR ejecutable
 # bootJar: tarea de Spring Boot que genera un "fat JAR" con todas las dependencias
 # --no-daemon: no usar proceso Gradle en segundo plano (mejor para Docker)
-# Resultado: build/libs/Mutantes-1.0-SNAPSHOT.jar
+# Resultado: build/libs/ExamenMercado-1.0-SNAPSHOT.jar
 RUN ./gradlew bootJar --no-daemon
 
 # ========================================
@@ -32,7 +35,7 @@ RUN ./gradlew bootJar --no-daemon
 # ========================================
 # Imagen base con SOLO el runtime de Java (sin herramientas de compilación)
 # Esto reduce el tamaño de la imagen final de ~500MB a ~200MB
-FROM openjdk:17-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 # Documentar que la aplicación escucha en el puerto 8080
 # IMPORTANTE: esto NO abre el puerto, solo es documentación
@@ -43,7 +46,7 @@ EXPOSE 8080
 # --from=build: tomar archivo de la etapa "build" anterior
 # Solo se copia el JAR, NO el código fuente ni herramientas de compilación
 # Esto mantiene la imagen final pequeña y segura
-COPY --from=build ./build/libs/Mutantes-1.0-SNAPSHOT.jar ./app.jar
+COPY --from=build ./build/libs/ExamenMercado-1.0-SNAPSHOT.jar ./app.jar
 
 # Comando que se ejecuta cuando el contenedor inicia
 # ENTRYPOINT (no CMD) asegura que siempre se ejecute la aplicación

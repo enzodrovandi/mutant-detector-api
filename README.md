@@ -5,6 +5,7 @@
 [![Gradle](https://img.shields.io/badge/Gradle-8.x-blue.svg)](https://gradle.org/)
 [![Tests](https://img.shields.io/badge/Tests-35%20passing-success.svg)]()
 [![Coverage](https://img.shields.io/badge/Coverage-90%25-brightgreen.svg)]()
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://examen-mercado-api.onrender.com)
 
 > 📚 **Proyecto Educativo**: API REST para detectar mutantes analizando secuencias de ADN. Desarrollado como examen técnico de MercadoLibre Backend Developer.
 
